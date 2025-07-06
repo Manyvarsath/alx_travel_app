@@ -1,18 +1,24 @@
-from pathlib import Path
 import os
 import environ
-
-env=environ.Env(
-    DEBUG=(bool, False)
-)
+from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env(
+    DB_NAME=(str, 'alx_travel_app'),
+    DB_USER=(str, 'postgres'),
+    DB_PASSWORD=(str, 'varsath'),
+    DB_HOST=(str, 'localhost'),
+    DB_PORT=(int, 5432),
+    DEBUG=(bool, True),
+    SECRET_KEY=(str, 'whatevs'),
+)
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
+DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
+CORS_ALLOW_ALL_ORIGINS = True
 
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -23,30 +29,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # local app
-    "listings",
-    # 3-rd party app
-    "rest_framework",
-    "corsheaders",
-    "drf_yasg"
+    'alx_travel_app.listings',
+    'rest_framework',
+    'corsheaders',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'alx_travel_app.urls'
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
-]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -62,10 +64,17 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'alx_travel_app.wsgi.application'	
+WSGI_APPLICATION = 'alx_travel_app.wsgi.application'
 
 DATABASES = {
-    'default': env.db()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -94,9 +103,3 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
