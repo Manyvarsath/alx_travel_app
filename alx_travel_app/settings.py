@@ -1,37 +1,102 @@
-testingIt's kinda full don't ya think
+from pathlib import Path
+import os
+import environ
 
+env=environ.Env(
+    DEBUG=(bool, False)
+)
 
-sssssssssIt's kinda full don't ya think
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-sssssssssIt's kinda full don't ya think
+SECRET_KEY = env('SECRET_KEY')
 
+DEBUG = True
 
-sssssssssIt's kinda full don't ya think
+ALLOWED_HOSTS = []
 
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # local app
+    "listings",
+    # 3-rd party app
+    "rest_framework",
+    "corsheaders",
+    "drf_yasg"
+]
 
-sssssssssIt's kinda full don't ya think
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
 
+ROOT_URLCONF = 'alx_travel_app.urls'
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
-sssssssssIt's kinda full don't ya think
+WSGI_APPLICATION = 'alx_travel_app.wsgi.application'	
 
+DATABASES = {
+    'default': env.db()
+}
 
-sssssssssIt's kinda full don't ya think
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
+LANGUAGE_CODE = 'en-us'
 
-sssssssssIt's kinda full don't ya think
+TIME_ZONE = 'UTC'
 
+USE_I18N = True
 
-sssssssssIt's kinda full don't ya think
+USE_TZ = True
 
+STATIC_URL = 'static/'
 
-sssssssssIt's kinda full don't ya think
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-sssssssssIt's kinda full don't ya think
-
-
-sssssssssIt's kinda full don't ya think
-
-
-sssssssss
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
